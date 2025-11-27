@@ -1,0 +1,38 @@
+---
+import type { ImageMetadata } from 'astro';
+import Base from './Base.astro';
+import Footer from './components/Footer.astro';
+import Header from './components/Header.astro';
+import Main from './components/Main.astro';
+
+interface LayoutProps {
+	title: string;
+	description: string;
+	image?: ImageMetadata;
+	mainVariant?: 'default' | 'wide' | 'full';
+}
+
+const { title, description, image, mainVariant = 'default' } = Astro.props satisfies LayoutProps;
+---
+
+<html lang="en">
+	<head>
+		<Base title={title} description={description} image={image} />
+		<slot name="head" />
+	</head>
+	<body>
+		<Header />
+		<Main variant={mainVariant}>
+			<slot />
+		</Main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	body {
+		display: flex;
+		flex-direction: column;
+		min-height: 100vh;
+	}
+</style>

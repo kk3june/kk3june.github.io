@@ -1,0 +1,68 @@
+---
+import { SITE_TITLE } from '../../consts';
+import HeaderLink from './HeaderLink.astro';
+---
+
+<header>
+	<div class="header-container">
+		<div class="logo">
+			<a href="/">{SITE_TITLE}</a>
+		</div>
+		<nav class="nav-links">
+			<HeaderLink href="/blog">Posts</HeaderLink>
+			<HeaderLink href="/about">About</HeaderLink>
+		</nav>
+	</div>
+</header>
+
+<style>
+	header {
+		position: sticky;
+		top: 0;
+		z-index: 50;
+		background: #FDFBF7;
+		border-bottom: 1px solid #e5e7eb;
+		backdrop-filter: blur(10px);
+		background: rgba(253, 251, 247, 0.95);
+	}
+
+	.header-container {
+		max-width: 64rem;
+		margin: 0 auto;
+		padding: 0 1.5rem;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		height: 70px;
+	}
+
+	.logo a {
+		font-size: 1.25rem;
+		font-weight: 800;
+		font-style: italic;
+		letter-spacing: -0.05em;
+		color: #0f0f11;
+		text-decoration: none;
+		transition: color 0.2s ease;
+	}
+
+	.logo a:hover {
+		color: #2563eb;
+	}
+
+	.nav-links {
+		display: flex;
+		gap: 1.5rem;
+		align-items: center;
+	}
+
+	@media (max-width: 640px) {
+		.header-container {
+			padding: 0 1rem;
+		}
+
+		.nav-links {
+			gap: 1rem;
+		}
+	}
+</style>

@@ -1,0 +1,41 @@
+---
+interface MainProps {
+	variant?: 'default' | 'wide' | 'full';
+}
+
+const { variant = 'default' } = Astro.props satisfies MainProps;
+const variantClass = `site-main site-main--${variant}`;
+---
+
+<main class={variantClass}>
+	<slot />
+</main>
+
+<style>
+	.site-main {
+		width: 100%;
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 3rem 2rem;
+	}
+
+	.site-main--wide {
+		max-width: 1024px;
+	}
+
+	.site-main--full {
+		max-width: 100%;
+		margin: 0;
+		padding: 0;
+	}
+
+	@media (max-width: 768px) {
+		.site-main {
+			padding: 2rem 1.5rem;
+		}
+
+		.site-main--full {
+			padding: 0;
+		}
+	}
+</style>
