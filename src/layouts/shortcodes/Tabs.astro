@@ -1,0 +1,227 @@
+---
+interface TabsProps {
+	id?: string;
+}
+
+const { id } = Astro.props;
+const tabsId =
+	id ??
+	`tabs-${typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : Math.random().toString(36).slice(2, 9)}`;
+---
+
+<div class="tab-wrapper">
+	<h2 class="tab-title">Tab</h2>
+	<section class="tab" data-tabs-id={tabsId}>
+		<ul class="tab-nav" role="tablist" aria-label="Tab navigation"></ul>
+		<div class="tab-panels">
+			<slot />
+		</div>
+	</section>
+</div>
+
+<script is:inline>
+	function initializeTabs() {
+		const allTabContainers = document.querySelectorAll('[data-tabs-id]');
+
+		allTabContainers.forEach((root) => {
+			if (root.dataset.tabsInitialized) return;
+			root.dataset.tabsInitialized = 'true';
+
+			const nav = root.querySelector('.tab-nav');
+			const panels = Array.from(root.querySelectorAll('.tab-panel'));
+
+			console.log('Initializing tabs:', root.dataset.tabsId, panels.length);
+
+			if (!nav || panels.length === 0) return;
+
+			nav.innerHTML = '';
+
+			const activateTab = (index) => {
+				console.log('Activating tab:', index);
+
+				// Toggle panel visibility
+				panels.forEach((panel, panelIndex) => {
+					const isActive = panelIndex === index;
+					if (isActive) {
+						panel.classList.add('active');
+					} else {
+						panel.classList.remove('active');
+					}
+					panel.setAttribute('aria-hidden', String(!isActive));
+				});
+
+				// Toggle button active state
+				const buttons = nav.querySelectorAll('.tab-nav-item');
+				console.log('Total buttons found:', buttons.length);
+
+				buttons.forEach((button, buttonIndex) => {
+					const isActive = buttonIndex === index;
+
+					// Remove all active classes first
+					button.classList.remove('active');
+
+					if (isActive) {
+						button.classList.add('active');
+						console.log('Active class added to button index:', buttonIndex, button);
+						console.log('Button classes after add:', button.className);
+					}
+
+					button.setAttribute('tabindex', isActive ? '0' : '-1');
+					button.setAttribute('aria-selected', String(isActive));
+				});
+
+				// Double check active class was applied
+				setTimeout(() => {
+					const activeButton = nav.querySelector('.tab-nav-item.active');
+					console.log('Active button after timeout:', activeButton);
+				}, 100);
+			};
+
+			// Create tab buttons
+			panels.forEach((panel, index) => {
+				const label = panel.dataset.tabLabel || `Tab ${index + 1}`;
+				const panelId = panel.dataset.tabPanelId || panel.id || `tab-${index}`;
+				const trigger = document.createElement('li');
+				trigger.role = 'tab';
+				trigger.dataset.index = String(index);
+				trigger.className = 'tab-nav-item';
+				trigger.textContent = label;
+				trigger.setAttribute('aria-controls', panelId);
+				trigger.setAttribute('tabindex', index === 0 ? '0' : '-1');
+				trigger.id = `${panelId}-trigger`;
+
+				trigger.addEventListener('click', () => activateTab(index));
+				trigger.addEventListener('keydown', (event) => {
+					if (event.key === 'Enter' || event.key === ' ') {
+						event.preventDefault();
+						activateTab(index);
+					} else if (event.key === 'ArrowRight') {
+						event.preventDefault();
+						const nextIndex = (index + 1) % panels.length;
+						activateTab(nextIndex);
+						nav.querySelector(`.tab-nav-item[data-index="${nextIndex}"]`)?.focus();
+					} else if (event.key === 'ArrowLeft') {
+						event.preventDefault();
+						const prevIndex = (index - 1 + panels.length) % panels.length;
+						activateTab(prevIndex);
+						nav.querySelector(`.tab-nav-item[data-index="${prevIndex}"]`)?.focus();
+					}
+				});
+
+				nav.appendChild(trigger);
+			});
+
+			// Activate first tab
+			activateTab(0);
+		});
+	}
+
+	// Run on multiple events to ensure initialization
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', initializeTabs);
+	} else {
+		initializeTabs();
+	}
+
+	// Also listen for Astro page load events
+	document.addEventListener('astro:page-load', initializeTabs);
+	document.addEventListener('astro:after-swap', initializeTabs);
+</script>
+
+<style is:global>
+	.tab-wrapper {
+		margin: 2.5rem 0;
+	}
+
+	.tab-title {
+		font-size: 2.5rem;
+		font-weight: 700;
+		margin: 0 0 1.5rem 0;
+		color: #0f0f11;
+		letter-spacing: -0.02em;
+	}
+
+	.tab {
+		border: 1px solid #e1e5ec;
+		border-radius: 18px;
+		background: #fff;
+		box-shadow: 0 6px 18px rgba(15, 18, 25, 0.05);
+		overflow: hidden;
+	}
+
+	.tab-nav {
+		display: flex;
+		gap: 3rem;
+		padding: 1rem 2.5rem 0;
+		margin: 0;
+		list-style: none;
+		border-bottom: 1px solid #e1e5ec;
+		background: #f6f7fb;
+	}
+
+	.tab-nav-item {
+		position: relative;
+		font-weight: 400;
+		background: transparent;
+		border: none;
+		padding: 1rem 0;
+		color: rgba(15, 15, 17, 0.45);
+		cursor: pointer;
+		font-size: 1rem;
+		transition: color 0.2s ease;
+		white-space: nowrap;
+		list-style: none;
+	}
+
+	.tab-nav-item::before {
+		display: none;
+	}
+
+	.tab-nav-item:hover {
+		color: rgba(15, 15, 17, 0.7);
+	}
+
+	li.tab-nav-item.active {
+		color: #0f0f11 !important;
+		font-weight: 800 !important;
+	}
+
+	.tab-nav-item.active::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 10px;
+		height: 3px;
+		background: #0f0f11;
+		border-radius: 999px;
+	}
+
+	.tab-nav-item:focus-visible {
+		outline: 2px solid #2337ff;
+		outline-offset: 2px;
+		border-radius: 2px;
+	}
+
+	.tab-panels {
+		position: relative;
+		padding: 2.5rem 3rem;
+		background: #fff;
+		min-height: 200px;
+	}
+
+	@media (max-width: 640px) {
+		.tab-nav {
+			gap: 1.5rem;
+			padding: 0.75rem 1.5rem 0;
+		}
+
+		.tab-panels {
+			padding: 1.5rem 2rem;
+		}
+
+		.tab-title {
+			font-size: 2rem;
+		}
+	}
+</style>
