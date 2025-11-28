@@ -1,0 +1,56 @@
+---
+interface TabProps {
+	name: string;
+}
+
+const { name } = Astro.props;
+const safeName = name
+	.toLowerCase()
+	.replace(/[^a-z0-9]+/g, '-')
+	.replace(/(^-|-$)/g, '');
+const panelId = `tab-panel-${safeName}-${Math.random().toString(36).slice(2, 7)}`;
+---
+
+<article
+	class="tab-panel"
+	role="tabpanel"
+	tabindex="0"
+	data-tab-label={name}
+	data-tab-panel-id={panelId}
+	id={panelId}
+>
+	<div class="tab-content">
+		<slot />
+	</div>
+</article>
+
+<style>
+	.tab-panel {
+		display: none;
+	}
+
+	.tab-panel.active {
+		display: block;
+		animation: tab-fade 200ms ease;
+	}
+
+	.tab-content > :first-child {
+		margin-top: 0;
+	}
+
+	.tab-content > :last-child {
+		margin-bottom: 0;
+	}
+
+	@keyframes tab-fade {
+		from {
+			opacity: 0;
+			transform: translateY(4px);
+		}
+
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+</style>

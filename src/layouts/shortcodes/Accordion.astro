@@ -1,0 +1,68 @@
+---
+interface AccordionProps {
+	title: string;
+	open?: boolean;
+}
+
+const { title, open = false } = Astro.props;
+---
+
+<details class="element-accordion" open={open}>
+	<summary>
+		<span>{title}</span>
+		<span class="indicator" aria-hidden="true">+</span>
+	</summary>
+	<div class="element-accordion__content">
+		<slot />
+	</div>
+</details>
+
+<style>
+	.element-accordion {
+		border: 1px solid rgba(var(--gray-light), 0.9);
+		border-radius: 12px;
+		padding: 0 1.25rem;
+		background: #fff;
+		box-shadow: 0 6px 24px rgba(15, 18, 25, 0.05);
+	}
+
+	.element-accordion + .element-accordion {
+		margin-top: 1rem;
+	}
+
+	.element-accordion summary {
+		cursor: pointer;
+		font-weight: 600;
+		list-style: none;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.5rem;
+		padding: 1.5rem 0;
+	}
+
+	.element-accordion summary::-webkit-details-marker {
+		display: none;
+	}
+
+	.indicator {
+		font-size: 1.25rem;
+		transition: transform 200ms ease;
+		color: var(--accent);
+	}
+
+	.element-accordion[open] .indicator {
+		transform: rotate(45deg);
+	}
+
+	.element-accordion__content {
+		margin: 0 0 1.25rem;
+		padding-top: 0.5rem;
+		color: rgb(var(--gray));
+	}
+
+	.element-accordion__content ul {
+		margin: 0.5rem 0 0 1.25rem;
+		padding: 0;
+	}
+</style>

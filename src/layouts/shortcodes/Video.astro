@@ -1,0 +1,36 @@
+---
+interface VideoProps {
+	src: string;
+	width?: string;
+	poster?: string;
+}
+
+const { src, width = '100%', poster } = Astro.props;
+---
+
+<div class="element-video" style={`--video-width:${width};`}>
+	<video controls preload="metadata" poster={poster}>
+		<source src={src} />
+		Sorry, your browser does not support embedded videos.
+	</video>
+</div>
+
+<style>
+	.element-video {
+		width: var(--video-width);
+		max-width: 100%;
+		margin-inline: auto;
+		box-shadow: 0 18px 40px rgba(15, 18, 25, 0.12);
+		border-radius: 20px;
+		overflow: hidden;
+		border: 1px solid rgba(var(--gray-light), 0.9);
+		background: #000;
+	}
+
+	.element-video video {
+		display: block;
+		width: 100%;
+		height: auto;
+		background: black;
+	}
+</style>

@@ -1,86 +1,156 @@
 ---
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import FormattedDate from '../components/FormattedDate.astro';
-import Header from '../components/Header.astro';
+import Layout from './Layout.astro';
+import FormattedDate from './shortcodes/FormattedDate.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage } = Astro.props satisfies Props;
 ---
 
-<html lang="en">
-	<head>
-		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-		</style>
-	</head>
-
-	<body>
-		<Header />
-		<main>
-			<article>
+<Layout title={title} description={description} image={heroImage} mainVariant="default">
+	<article class="blog-post">
+		<header class="post-header">
+			<h1 class="post-title">{title}</h1>
+			{heroImage && (
 				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
+					<Image width={1200} height={600} src={heroImage} alt={title} />
 				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
-					</div>
-					<slot />
-				</div>
-			</article>
-		</main>
-		<Footer />
-	</body>
-</html>
+			)}
+		</header>
+		<div class="post-content prose">
+			<slot />
+		</div>
+	</article>
+
+	<style>
+		.blog-post {
+			max-width: 100%;
+		}
+
+		.post-header {
+			margin-bottom: 3rem;
+		}
+
+		.post-title {
+			font-size: clamp(2rem, 5vw, 2.5rem);
+			font-weight: 700;
+			line-height: 1.2;
+			margin: 0 0 2rem 0;
+			color: #0f0f11;
+		}
+
+		.hero-image {
+			border-radius: 12px;
+			overflow: hidden;
+			margin-bottom: 2rem;
+		}
+
+		.hero-image img {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
+
+		.post-content {
+			font-size: 1rem;
+			line-height: 1.8;
+			color: #374151;
+		}
+
+		.post-content :global(h1),
+		.post-content :global(h2),
+		.post-content :global(h3),
+		.post-content :global(h4),
+		.post-content :global(h5),
+		.post-content :global(h6) {
+			margin-top: 2.5rem;
+			margin-bottom: 1rem;
+			font-weight: 700;
+			line-height: 1.3;
+			color: #0f0f11;
+		}
+
+		.post-content :global(h1) {
+			font-size: 2rem;
+		}
+
+		.post-content :global(h2) {
+			font-size: 1.75rem;
+		}
+
+		.post-content :global(h3) {
+			font-size: 1.5rem;
+		}
+
+		.post-content :global(h4) {
+			font-size: 1.25rem;
+		}
+
+		.post-content :global(h5) {
+			font-size: 1.125rem;
+		}
+
+		.post-content :global(h6) {
+			font-size: 1rem;
+		}
+
+		.post-content :global(a:not(.element-button)) {
+			color: #2563eb;
+			text-decoration: none;
+			border-bottom: 1px solid rgba(37, 99, 235, 0.3);
+			transition: all 0.2s ease;
+		}
+
+		.post-content :global(a:not(.element-button):hover) {
+			border-bottom-color: #2563eb;
+		}
+
+		.post-content :global(strong) {
+			font-weight: 600;
+			color: #1f2937;
+		}
+
+		.post-content :global(code) {
+			background: #f3f4f6;
+			padding: 0.2em 0.4em;
+			border-radius: 4px;
+			font-size: 0.9em;
+			color: #e04c3a;
+		}
+
+		.post-content :global(pre) {
+			margin: 2rem 0;
+		}
+
+		.post-content :global(pre code) {
+			background: transparent;
+			padding: 0;
+			color: inherit;
+		}
+
+		@media (max-width: 768px) {
+			.post-header {
+				margin-bottom: 2rem;
+			}
+
+			.post-title {
+				font-size: 1.75rem;
+				margin-bottom: 1.5rem;
+			}
+
+			.post-content :global(h1) {
+				font-size: 1.75rem;
+			}
+
+			.post-content :global(h2) {
+				font-size: 1.5rem;
+			}
+
+			.post-content :global(h3) {
+				font-size: 1.25rem;
+			}
+		}
+	</style>
+</Layout>
