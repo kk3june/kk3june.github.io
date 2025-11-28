@@ -2,7 +2,7 @@
 import HeaderLink from './HeaderLink.astro';
 ---
 
-<header>
+<header id="header">
 	<div class="header-container">
 		<div class="logo">
 			<a href="/">kk3june</a>
@@ -12,15 +12,35 @@ import HeaderLink from './HeaderLink.astro';
 	</div>
 </header>
 
+<script>
+	const header = document.getElementById('header');
+
+	function handleScroll() {
+		if (window.scrollY > 0) {
+			header?.classList.add('scrolled');
+		} else {
+			header?.classList.remove('scrolled');
+		}
+	}
+
+	window.addEventListener('scroll', handleScroll);
+	handleScroll(); // Initial check
+</script>
+
 <style>
 	header {
 		position: sticky;
 		top: 0;
 		z-index: 50;
 		background: #FDFBF7;
-		border-bottom: 1px solid #e5e7eb;
 		backdrop-filter: blur(10px);
 		background: rgba(253, 251, 247, 0.95);
+		border-bottom: 1px solid transparent;
+		transition: border-color 0.2s ease;
+	}
+
+	header.scrolled {
+		border-bottom-color: #e5e7eb;
 	}
 
 	.header-container {
