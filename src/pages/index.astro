@@ -1,15 +1,15 @@
 ---
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
-import FormattedDate from '../layouts/shortcodes/FormattedDate.astro';
-import Layout from '../layouts/Layout.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import FormattedDate from '@/layouts/shortcodes/FormattedDate.astro';
+import Layout from '@/layouts/Layout.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '@/consts';
 
 const POSTS_PER_PAGE = 6;
 
 const allPosts = (await getCollection('blog'))
 	.filter((post) => !post.data.draft)
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+	.sort((a, b) => b.data.createdAt.valueOf() - a.data.createdAt.valueOf());
 
 // Featured 포스트 분리 (복수 가능)
 const featuredPosts = allPosts.filter((post) => post.data.featured);
@@ -62,11 +62,11 @@ const allTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
 									<a href={`/blog/${post.id}/`} class="featured-link">
 										<div class="featured-image">
 											<span class="featured-badge">Featured</span>
-											{post.data.heroImage ? (
+											{post.data.thumbnail ? (
 												<Image
 													width={1200}
 													height={600}
-													src={post.data.heroImage}
+													src={post.data.thumbnail}
 													alt={post.data.title}
 													class="featured-img"
 												/>
@@ -78,7 +78,7 @@ const allTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
 											<h3 class="featured-title">{post.data.title}</h3>
 											<div class="featured-meta">
 												<time class="featured-date">
-													<FormattedDate date={post.data.pubDate} />
+													<FormattedDate date={post.data.createdAt} />
 												</time>
 												{post.data.tags.length > 0 && (
 													<div class="featured-tags">
@@ -126,11 +126,11 @@ const allTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
 					>
 						<a href={`/blog/${post.id}/`} class="card-link">
 							<div class="card-image">
-								{post.data.heroImage ? (
+								{post.data.thumbnail ? (
 									<Image
 										width={400}
 										height={240}
-										src={post.data.heroImage}
+										src={post.data.thumbnail}
 										alt={post.data.title}
 										class="card-img"
 									/>
@@ -140,7 +140,7 @@ const allTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
 							</div>
 							<div class="card-content">
 								<time class="card-date">
-									<FormattedDate date={post.data.pubDate} />
+									<FormattedDate date={post.data.createdAt} />
 								</time>
 								<h3 class="card-title">{post.data.title}</h3>
 								{post.data.description && (
