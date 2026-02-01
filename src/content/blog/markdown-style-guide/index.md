@@ -1,9 +1,12 @@
 ---
-title: 'Markdown Style Guide'
-description: 'Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.'
-createdAt: 'Jun 19 2024'
-thumbnail: './hero.jpg'
-draft: true
+title: "Markdown Style Guide"
+meta_title: ""
+description: "Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro."
+createdAt: "2024/06/19"
+thumbnail: "./hero.jpg"
+tags: ["Markdown", "Astro"]
+featured: false
+draft: false
 ---
 
 Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.
