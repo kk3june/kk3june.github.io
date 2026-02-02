@@ -1,4 +1,8 @@
 @import "tailwindcss";
-@import './reset.css';
-@import './fonts.css';
-@import './components.css';
+@import "./reset.css";
+@import "./fonts.css";
+@import "./components.css";
+
+html {
+  scroll-behavior: smooth;
+}
