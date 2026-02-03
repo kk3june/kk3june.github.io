@@ -3,29 +3,62 @@
   https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md (MIT)
 */
 :root {
+  --bg-color: #fdfbf7;
+  --text-color: #1f2937;
+  --heading-color: #0f1219;
   --accent: #2337ff;
   --accent-dark: #000d8a;
-  --black: 15, 18, 25;
   --gray: 96, 115, 159;
   --gray-light: 229, 233, 240;
   --gray-dark: 34, 41, 57;
   --gray-gradient: rgba(var(--gray-light), 50%), #fff;
   --box-shadow: 0 2px 6px rgba(var(--gray), 25%),
     0 8px 24px rgba(var(--gray), 33%), 0 16px 32px rgba(var(--gray), 33%);
+  
+  --header-bg: rgba(253, 251, 247, 0.95);
+  --card-bg: #ffffff;
+  --tag-bg: #f3f4f6;
+  --tag-text: #6b7280;
+  --border-color: rgba(229, 233, 240, 0.8);
+  --code-bg: rgba(29, 32, 39, 0.08);
+  --blockquote-bg: #fafbfc;
+  --blockquote-text: #3d4451;
+  --list-marker: #9ca3af;
+}
+
+:root.dark {
+  --bg-color: #111827;
+  --text-color: #e5e7eb;
+  --heading-color: #f3f4f6;
+  --accent: #60a5fa;
+  --accent-dark: #3b82f6;
+  --gray: 156, 163, 175;
+  --gray-light: 55, 65, 81;
+  
+  --header-bg: rgba(17, 24, 39, 0.95);
+  --card-bg: #1f2937;
+  --tag-bg: #374151;
+  --tag-text: #d1d5db;
+  --border-color: #374151;
+  --code-bg: rgba(255, 255, 255, 0.1);
+  --blockquote-bg: #1f2937;
+  --blockquote-text: #d1d5db;
+  --list-marker: #6b7280;
 }
 
 body {
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
   text-align: left;
-  background: #fdfbf7;
+  background: var(--bg-color);
   word-wrap: break-word;
   overflow-wrap: break-word;
-  color: #1f2937;
+  color: var(--text-color);
   font-size: 16px;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 h1,
@@ -35,7 +68,7 @@ h4,
 h5,
 h6 {
   margin: 0 0 0.5rem 0;
-  color: rgb(var(--black));
+  color: var(--heading-color);
   line-height: 1.2;
 }
 
@@ -62,6 +95,7 @@ h5 {
 strong,
 b {
   font-weight: 700;
+  color: var(--heading-color);
 }
 
 a {
@@ -77,7 +111,7 @@ p {
 }
 
 .prose p {
-  color: #4d5562;
+  color: var(--text-color);
 }
 
 /* Ordered Lists */
@@ -93,7 +127,7 @@ ol > li {
   position: relative;
   padding-left: 1.5em;
   margin-bottom: 0.75em;
-  color: #1c1c1e;
+  color: var(--text-color);
   counter-increment: list-counter;
 }
 
@@ -102,7 +136,7 @@ ol > li::before {
   position: absolute;
   left: 0;
   font-weight: 600;
-  color: #0f0f11;
+  color: var(--heading-color);
   width: 1.2em;
   text-align: right;
 }
@@ -119,14 +153,14 @@ ul > li {
   position: relative;
   padding-left: 1.5em;
   margin-bottom: 0.75em;
-  color: #1c1c1e;
+  color: var(--text-color);
 }
 
 ul > li::before {
   content: "•";
   position: absolute;
   left: 0;
-  color: #9ca3af;
+  color: var(--list-marker);
   font-weight: 700;
   font-size: 1.2em;
   line-height: 1.2;
@@ -155,10 +189,16 @@ ul ul ul > li::before {
 textarea {
   width: 100%;
   font-size: 16px;
+  background: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
 }
 
 input {
   font-size: 16px;
+  background: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
 }
 
 table {
@@ -173,7 +213,7 @@ img {
 
 code {
   padding: 2px 6px;
-  background-color: rgba(29, 32, 39, 0.08);
+  background-color: var(--code-bg);
   border-radius: 4px;
   font-size: 0.95em;
 }
@@ -181,7 +221,7 @@ code {
 pre {
   padding: 1.25rem 1.5rem;
   border-radius: 12px;
-  background: #1b1d21;
+  background: #1b1d21; /* Always dark for code blocks usually */
   color: #f4f5f7;
   font-size: 0.95rem;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
@@ -192,16 +232,16 @@ pre > code {
 }
 
 blockquote {
-  border-left: 5px solid #0f0f11;
-  border-right: 1px solid #e1e5ec;
-  border-top: 1px solid #e1e5ec;
-  border-bottom: 1px solid #e1e5ec;
+  border-left: 5px solid var(--heading-color);
+  border-right: 1px solid var(--border-color);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
   padding: 2rem 2.5rem;
   margin: 2rem 0;
   font-size: 1.05rem;
-  background: #fafbfc;
+  background: var(--blockquote-bg);
   border-radius: 8px;
-  color: #3d4451;
+  color: var(--blockquote-text);
   font-style: normal;
   line-height: 1.75;
 }
@@ -214,19 +254,19 @@ blockquote p::before {
   content: '"';
   font-size: 1.2em;
   font-weight: 600;
-  color: #3d4451;
+  color: var(--blockquote-text);
 }
 
 blockquote p::after {
   content: '"';
   font-size: 1.2em;
   font-weight: 600;
-  color: #3d4451;
+  color: var(--blockquote-text);
 }
 
 hr {
   border: none;
-  border-top: 1px solid rgba(var(--gray-light), 0.8);
+  border-top: 1px solid var(--border-color);
   margin: 3rem 0 2rem;
 }
 
@@ -234,7 +274,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin: 1.5rem 0;
-  border: 1px solid rgba(var(--gray-light), 0.9);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   overflow: hidden;
 }
@@ -243,12 +283,13 @@ table th,
 table td {
   padding: 0.9rem 1rem;
   text-align: left;
-  border-bottom: 1px solid rgba(var(--gray-light), 0.8);
+  border-bottom: 1px solid var(--border-color);
 }
 
 table thead {
-  background: rgba(var(--gray-light), 0.4);
+  background: rgba(var(--gray-light), 0.4); /* Depends on how gray-light is handled, used RGBA */
   font-weight: 600;
+  color: var(--heading-color);
 }
 
 @media (max-width: 720px) {

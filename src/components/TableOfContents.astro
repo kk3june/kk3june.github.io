@@ -38,7 +38,7 @@ const filteredHeadings = headings.filter((heading) => heading.depth <= 3);
     font-weight: 700;
     margin-bottom: 1rem;
     font-size: 1rem;
-    color: #111827;
+    color: var(--heading-color);
   }
 
   ul {
@@ -60,14 +60,16 @@ const filteredHeadings = headings.filter((heading) => heading.depth <= 3);
   .toc-item a {
     display: block;
     padding: 0.25rem 0;
-    color: #6b7280;
+    color: var(--text-color);
     text-decoration: none;
     transition: all 0.2s;
     line-height: 1.4;
+    opacity: 0.8;
   }
 
   .toc-item a:hover {
-    color: #111827;
+    color: var(--heading-color);
+    opacity: 1;
   }
 
   .toc-level-3 a {
@@ -75,8 +77,9 @@ const filteredHeadings = headings.filter((heading) => heading.depth <= 3);
   }
 
   .toc-item a.active {
-    color: #2563eb;
+    color: var(--accent);
     font-weight: 500;
+    opacity: 1;
   }
 </style>
 

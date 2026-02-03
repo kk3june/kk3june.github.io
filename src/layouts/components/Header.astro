@@ -1,85 +1,87 @@
 ---
-import HeaderLink from './HeaderLink.astro';
+import ThemeToggle from "@/components/ThemeToggle.astro";
 ---
 
 <header id="header">
-	<div class="header-container">
-		<div class="logo">
-			<a href="/">kk3june</a>
-		</div>
-		<nav class="nav-links">
-		</nav>
-	</div>
+  <div class="header-container">
+    <div class="logo">
+      <a href="/">kk3june</a>
+    </div>
+    <nav class="nav-links">
+      <ThemeToggle />
+    </nav>
+  </div>
 </header>
 
 <script>
-	const header = document.getElementById('header');
+  const header = document.getElementById("header");
 
-	function handleScroll() {
-		if (window.scrollY > 0) {
-			header?.classList.add('scrolled');
-		} else {
-			header?.classList.remove('scrolled');
-		}
-	}
+  function handleScroll() {
+    if (window.scrollY > 0) {
+      header?.classList.add("scrolled");
+    } else {
+      header?.classList.remove("scrolled");
+    }
+  }
 
-	window.addEventListener('scroll', handleScroll);
-	handleScroll(); // Initial check
+  window.addEventListener("scroll", handleScroll);
+  handleScroll();
 </script>
 
 <style>
-	header {
-		position: sticky;
-		top: 0;
-		z-index: 50;
-		background: #FDFBF7;
-		backdrop-filter: blur(10px);
-		background: rgba(253, 251, 247, 0.95);
-		border-bottom: 1px solid transparent;
-		transition: border-color 0.2s ease;
-	}
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--header-bg);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid transparent;
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease;
+  }
 
-	header.scrolled {
-		border-bottom-color: #e5e7eb;
-	}
+  header.scrolled {
+    border-bottom-color: var(--border-color);
+  }
 
-	.header-container {
-		max-width: 64rem;
-		margin: 0 auto;
-		padding: 0 1.5rem;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		height: 70px;
-	}
+  .header-container {
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+  }
 
-	.logo a {
-		font-size: 1.25rem;
-		font-weight: 800;
-		font-style: italic;
-		letter-spacing: -0.05em;
-		color: #0f0f11;
-		text-decoration: none;
-		transition: color 0.2s ease;
-	}
+  .logo a {
+    font-size: 1.25rem;
+    font-weight: 800;
+    font-style: italic;
+    letter-spacing: -0.05em;
+    color: var(--heading-color);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
 
-	.logo a:hover {
-		color: #2563eb;
-	}
+  .logo a:hover {
+    color: var(--accent);
+  }
 
-	.nav-links {
-		display: flex;
-		gap: 1.5rem;
-		align-items: center;
-	}
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
 
-	@media (max-width: 640px) {
-		.header-container {
-			padding: 0 1rem;
-		}
+  @media (max-width: 640px) {
+    .header-container {
+      padding: 0 1rem;
+    }
 
-		.nav-links {
-			gap: 1rem;
-		}
-	}
+    .nav-links {
+      gap: 1rem;
+    }
+  }
 </style>
