@@ -6,7 +6,7 @@ createdAt: "2024/06/19"
 thumbnail: "./hero.jpg"
 tags: ["Markdown", "Astro"]
 featured: false
-draft: false
+draft: true
 ---
 
 Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.
